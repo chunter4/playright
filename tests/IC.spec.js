@@ -10,6 +10,15 @@ test('Google for \'Aira Las Vegas\', click link containing \'guestreservations.c
   //Search for 'Aira Las Vegas' and click on link containing 'guestreservations.com'
   await page.getByLabel('Search', { exact: true }).fill('aira las vegas');
   await page.getByLabel('Search', { exact: true }).press('Enter');
+
+  //if the guestreservations.com site isn't available, search again
+  const modal1 = page.getByText('guestreservations.com');
+  if (!await modal1.isVisible({timeout: 3000})) {
+    await page.getByLabel('Search', { exact: true }).first().clear();
+    await page.getByLabel('Search', { exact: true }).first().fill('aira las vegas');
+    await page.getByLabel('Search', { exact: true }).first().press('Enter');
+  }
+
   await page.getByText('guestreservations.com').first().scrollIntoViewIfNeeded;
   await page.getByText('guestreservations.com').first().click();
 
